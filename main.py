@@ -2,7 +2,7 @@ from pandas import DataFrame
 from tqdm import tqdm
 from bigquery import fetch_table_data, load_dataframe_to_bigquery
 from emotionBert import calc_emotion_bert, convert_emotion_bert
-from emotionLukeWrime import calc_emotion_luke_wrime
+from emotionLukeWrime import calc_emotion_luke_wrime, convert_emotion_luke_wrime
 from query import (
     bert_emotion_data_query,
     luke_wrime_data_query,
@@ -68,7 +68,7 @@ def luke_wrime_analysis_by_day(day, live_data_day: DataFrame):
     tqdm.write(f"▶ Number of missing IDs: {len(luke_missing_ids_data)}")
 
     # LUKE WRIMEを用いた感情分析の処理をし、JSONL形式に変換
-    new_luke_data = convert_emotion_bert(luke_missing_ids_data, calc_emotion_luke_wrime)
+    new_luke_data = convert_emotion_luke_wrime(luke_missing_ids_data, calc_emotion_luke_wrime)
     load_dataframe_to_bigquery(new_luke_data, luke_wrime_emotion_table_id)
     # ##
 
