@@ -6,6 +6,8 @@ from envManager import is_dev_environment
 import pandas as pd
 from pandas.testing import assert_frame_equal
 
+from util import get_date_range
+
 
 
 class TestIsLocalEnvironment(unittest.TestCase):
@@ -233,6 +235,11 @@ class TestLukeWrimeEmotionAnalysis(unittest.TestCase):
         print(destination_df)
 
         assert_frame_equal(result_df,destination_df,check_exact=False) # GPUとCPUで若干結果が違うため許容する 
+
+class TestGetDateRange(unittest.TestCase):
+    def test_get_date_range(self):
+        days = get_date_range("2025-08-11","2025-08-11")
+        self.assertEqual(days, ["2025-08-11"])
 
 
 if __name__ == "__main__":
