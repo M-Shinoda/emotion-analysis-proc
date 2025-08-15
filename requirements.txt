@@ -1,0 +1,13 @@
+google-cloud-bigquery
+pandas
+db-dtypes
+tqdm
+transformers
+numpy
+pyarrow
+sentencepiece
+ipadic
+fugashi
+unidic_lite
+torch
+google-cloud-bigquery-storage
