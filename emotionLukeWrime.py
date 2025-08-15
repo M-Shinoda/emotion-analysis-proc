@@ -35,18 +35,15 @@ def calc_emotion_luke_wrime(text: str) -> tuple:  # (label, score)
     token = tokenizer(
         text, truncation=True, max_length=max_seq_length, padding="max_length"
     )
-    if torch.cuda.is_available():
-        output = model(
-            torch.tensor(token["input_ids"]).unsqueeze(0).to("cuda"),
-            torch.tensor(token["attention_mask"]).unsqueeze(0).to("cuda"),
-        )
-    else:
-        output = model(
-            torch.tensor(token["input_ids"]).unsqueeze(0),
-            torch.tensor(token["attention_mask"]).unsqueeze(0),
-        )
-    max_index = torch.argmax(torch.tensor(output.logits))
-    index = torch.tensor(output.logits)
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model.to(device)  # モデルを適切なデバイスに移動
+
+    input_ids = torch.tensor(token["input_ids"]).unsqueeze(0).to(device)
+    attention_mask = torch.tensor(token["attention_mask"]).unsqueeze(0).to(device)
+
+    output = model(input_ids, attention_mask)
+    max_index = torch.argmax(output.logits, dim=1).item()
+    index = output.logits.cpu().detach().numpy()  # 必要に応じてCPUに戻す
     return max_index, index
 
 

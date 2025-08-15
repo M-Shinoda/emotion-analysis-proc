@@ -4,6 +4,8 @@ from emotionBert import convert_emotion_bert, calc_emotion_bert_demo, calc_emoti
 from emotionLukeWrime import calc_emotion_luke_wrime, convert_emotion_luke_wrime
 from envManager import is_dev_environment
 import pandas as pd
+from pandas.testing import assert_frame_equal
+
 
 
 class TestIsLocalEnvironment(unittest.TestCase):
@@ -144,7 +146,7 @@ class TestBertEmotionAnalysis(unittest.TestCase):
         destination_df = pd.DataFrame(destination_data)
         result_df = convert_emotion_bert(df, calc_emotion_bert)
 
-        self.assertTrue(result_df.equals(destination_df))
+        assert_frame_equal(result_df,destination_df, check_exact=False) # GPUとCPUで若干結果が違うため許容する 
 
 
 class TestLukeWrimeEmotionAnalysis(unittest.TestCase):
@@ -230,7 +232,7 @@ class TestLukeWrimeEmotionAnalysis(unittest.TestCase):
         print("期待されるデータフレーム:")
         print(destination_df)
 
-        self.assertTrue(result_df.equals(destination_df))
+        assert_frame_equal(result_df,destination_df,check_exact=False) # GPUとCPUで若干結果が違うため許容する 
 
 
 if __name__ == "__main__":
